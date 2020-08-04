@@ -1,13 +1,32 @@
-"""Generic endpoint and rest ep with shelf ABC"""
+"""Generic endpoint ABCs"""
 
 from abc import ABC
 import typing as typ
+import uuid
+import attr
 
+
+@attr.s(hash=False)
+class Hashable(ABC):
+    # Unique id for session, not persistent for endpoint across sessions
+    _uuid: uuid = attr.ib(factory=uuid.uuid4, init=False)
+
+    def __hash__(self):
+        return self._uuid.int
+
+
+@attr.s(auto_attribs=True)
+class Data(Hashable):
+    meta: typ.Dict = attr.Factory(dict)
+    data: typ.Any = None
+
+
+# Maybe the object uuid, or a source specific key
 UID = typ.TypeVar('UID')
-Data = typ.TypeVar('Data')
 
 
 # Basic ABC that translates UIDs and Data to and from endpoint APIs
+@attr.s(hash=False)
 class Endpoint(ABC):
 
     def status(self) -> bool:
