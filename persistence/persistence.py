@@ -6,7 +6,7 @@ import os
 import typing as typ
 import pickle
 import attr
-from .endpoint import UID, Data
+from ..endpoint import UID, Data
 
 
 # Pickle wrapper that behaves like a persistent k,v store
@@ -24,7 +24,7 @@ class PersistenceBackend(object):
                 return pickle.load(f)
         return {}
 
-    def t(self, key: UID) -> Data:
+    def t(self, key: UID) -> UID:
         return f"{self.namespace}/{key}"
 
     def __getitem__(self, key: UID):

@@ -16,13 +16,10 @@ Creating a Watcher framework
 
 import typing as typ
 import time
-from enum import Enum
 import attr
-from .endpoint import Hashable
+from ...endpoint import Hashable
 
-
-class EventType(Enum):
-    CHANGED = "changed"
+EventType = typ.TypeVar("EventType")
 
 
 @attr.s(auto_attribs=True)

@@ -2,8 +2,6 @@ from datetime import datetime, timedelta
 from dateutil import parser as dtparser
 import attr
 
-# test change
-# another little change
 
 def parse_time(value):
     if isinstance(value, datetime):

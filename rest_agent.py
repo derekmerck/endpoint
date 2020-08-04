@@ -4,7 +4,7 @@ from urllib.parse import urljoin
 from json import JSONDecodeError
 import attr
 import requests
-from .persistence import ShelfMixin
+from .persistence.persistence import ShelfMixin
 
 
 # REST agent framework that wraps a Requests session object

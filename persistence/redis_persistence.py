@@ -6,7 +6,7 @@ from urllib.parse import urlparse
 import pickle
 import attr
 from redis import Redis
-from .endpoint import UID, Data
+from ..endpoint import UID, Data
 from .persistence import PersistenceBackend
 
 
@@ -34,7 +34,7 @@ class RedisPersistenceBackend(PersistenceBackend):
         _gateway = Redis(host=host, port=port, password=self.password, db=self.db)
         return _gateway
 
-    def t(self, key: UID) -> Data:
+    def t(self, key: UID) -> UID:
         return f"{self.namespace}/{key}"
 
     def __getitem__(self, key: UID):

@@ -72,5 +72,5 @@ class AttrsSerializable(ABC):
             cls.registry[my_class.__name__] = my_class
 
     def __attrs_post_init__(self):
-        # print("Initting as serializable")
+        # self.logger.debug(f"Initting {self.__class__} as serializable")
         AttrsSerializable.Factory.register(self.__class__)
