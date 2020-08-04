@@ -9,6 +9,12 @@ Deriving a class from Endpoint, RestAgent, and Serializable creates a highly fun
 
 RestAgent and other utilities are applicable in other domains as well, so this code library is intended to be included in other projects as a git submodule.
 
+```bash
+$ git add submodule https://github.com/derekmerck/endpoint /path/to/submodule
+```
+
+See submodule documentation at <https://git-scm.com/book/en/v2/Git-Tools-Submodules>
+
 ## License
 
 MIT

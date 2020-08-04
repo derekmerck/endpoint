@@ -1,7 +1,7 @@
 import logging
 from abc import ABC
-import yaml
 from pprint import pformat
+import yaml
 import attr
 
 
@@ -22,7 +22,6 @@ class AttrsSerializable(ABC):
         for cls in self.__class__.mro():
             if hasattr(cls, "attr_exclude"):
                 _filters += cls.attr_exclude
-        # _dict = attr.asdict(self, filter=lambda k, v: True if k.name not in _filters else False)
         _dict = attr.asdict(self, filter=clean_entries)
         # Get rid of leading underscores for private vars (silly attrs convention)
         _dict = {k.lstrip("_"): v for k, v in _dict.items()}
