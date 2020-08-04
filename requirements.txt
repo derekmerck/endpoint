@@ -2,3 +2,6 @@ attrs
 pyyaml
 requests
 python-dateutil
+
+# optional dep for redis shelf
+redis
