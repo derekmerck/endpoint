@@ -7,11 +7,11 @@ UID = typ.TypeVar('UID')
 Data = typ.TypeVar('Data')
 
 
-# Basic ABC that translates UIDs and Data to and from
-# endpoint APIs
+# Basic ABC that translates UIDs and Data to and from endpoint APIs
 class Endpoint(ABC):
 
     def status(self) -> bool:
+        """Check enpoint health or raise EndpointHealthException"""
         raise NotImplemented
 
     def get(self, uid: UID, *args, **kwargs) -> Data:
@@ -22,6 +22,9 @@ class Endpoint(ABC):
         """Send a query dict, return a list of uid's or []"""
         raise NotImplemented
 
+    def exists(self, uid: UID, *args, **kwargs) -> bool:
+        raise NotImplementedError
+
     def put(self, data: Data, *args, **kwargs) -> UID:
         """Send a data object, return its uid or None"""
         raise NotImplemented
@@ -29,3 +32,14 @@ class Endpoint(ABC):
     def delete(self, uid: UID, *args, **kwargs) -> bool:
         """Send a single uid, return a boolean"""
         raise NotImplemented
+
+    # Alias 'remove' to the 'delete' method for convenience
+    remove = delete
+
+    def inventory(self, *args, **kwargs) -> typ.Union[UID, Data]:
+        """Return all items or keys for all items"""
+        raise NotImplementedError
+
+    def clear(self, *args, **kwargs):
+        """Remove all items, reset endpoint data"""
+        raise NotImplementedError
