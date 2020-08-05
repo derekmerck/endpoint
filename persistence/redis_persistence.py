@@ -6,7 +6,7 @@ from urllib.parse import urlparse
 import pickle
 import attr
 from redis import Redis
-from ..endpoint import UID, Data
+from ..endpoint import UID, DataItem
 from .persistence import PersistenceBackend
 
 
@@ -43,7 +43,7 @@ class RedisPersistenceBackend(PersistenceBackend):
             obj = pickle.loads(ser)
             return obj
 
-    def __setitem__(self, key: UID, value: Data):
+    def __setitem__(self, key: UID, value: DataItem):
         ser = pickle.dumps(value)
         self.gateway.set(self.t(key), ser)
 

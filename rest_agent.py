@@ -38,7 +38,7 @@ class RestAgent(ShelfMixin):
         self.session = self.setup_session()
 
     def setup_new_session(self) -> requests.Session:
-        raise NotImplemented
+        raise NotImplementedError
 
     def handle_errors(self, r: requests.Response):
         print(r.status_code)

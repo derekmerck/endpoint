@@ -6,7 +6,7 @@ import os
 import typing as typ
 import pickle
 import attr
-from ..endpoint import UID, Data
+from ..data_item import UID, DataItem
 
 
 # Pickle wrapper that behaves like a persistent k,v store
@@ -31,7 +31,7 @@ class PersistenceBackend(object):
         if self.__contains__(key):
             return self.registry.__getitem__(self.t(key))
 
-    def __setitem__(self, key: UID, value: Data):
+    def __setitem__(self, key: UID, value: DataItem):
         ret = self.registry.__setitem__(self.t(key), value)
         with open(self.file, "wb") as f:
             pickle.dump(self.registry, f)

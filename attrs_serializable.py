@@ -57,7 +57,7 @@ class AttrsSerializable(ABC):
         registry = {}
 
         @classmethod
-        def make(cls, **kwargs):
+        def make(cls, **kwargs) -> "AttrsSerializable":
             if not "ctype" in kwargs.keys():
                 raise ValueError
             ctype = kwargs.get("ctype")

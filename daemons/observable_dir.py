@@ -17,9 +17,12 @@ class FileEventType(Enum):
     FILE_DELETED  = "file_deleted"
 
 
+PathLike = typ.Union[str, pathlib.Path]
+
+
 @attr.s(auto_attribs=True, hash=False)
-class ObservableDirectory(ObservableMixin, FileSystemEventHandler, Serializable):
-    root: pathlib.Path = None
+class ObservableDirectory(ObservableMixin, Serializable, FileSystemEventHandler):
+    root: PathLike = attr.ib(default=None, converter=pathlib.Path)
     events: deque = attr.ib(factory=deque)
 
     def changes(self) -> typ.List[Event]:
@@ -38,11 +41,6 @@ class ObservableDirectory(ObservableMixin, FileSystemEventHandler, Serializable)
         fp = wd_event.src_path
         event_type = None
         sleep_time = 0.0
-
-        # if wd_event.event_type == "created" and event_data.endswith(".zip"):
-        #     logger.debug("Found a zipped archive")
-        #     event_type = DicomEventType.FILE_ADDED
-        #     sleep_time = 1.0  # Wait 1 sec for file to settle
 
         if wd_event.event_type == "created":
             self.logger.debug("Found a new file")
