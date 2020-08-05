@@ -20,7 +20,7 @@ class RestAgent(ShelfMixin):
 
     session: requests.Session = attr.ib(repr=False, init=False, default=None)
 
-    def setup_session(self):
+    def setup_session(self) -> requests.Session:
         # Check for existing credentials and use them
         # if they are available on the shelf
         if not self.clear_session and "session" in self.shelf:
@@ -55,7 +55,7 @@ class RestAgent(ShelfMixin):
                 files: typ.Dict = None,
                 inspect: bool = False,
                 verbose: bool = False,
-                decoder: typ.Callable = None) -> typ.Union[typ.Dict, str, None]:
+                decoder: typ.Callable = None) -> typ.Union[typ.Dict, typ.List, str, None]:
 
         url = urljoin(self.url, resource)
         req = requests.Request(method, url, params=params, headers=headers,

@@ -27,11 +27,11 @@ class PersistenceBackend(object):
     def t(self, key: UID) -> UID:
         return f"{self.namespace}/{key}"
 
-    def __getitem__(self, key: UID):
+    def __getitem__(self, key: UID) -> typ.Any:
         if self.__contains__(key):
             return self.registry.__getitem__(self.t(key))
 
-    def __setitem__(self, key: UID, value: DataItem):
+    def __setitem__(self, key: UID, value: typ.Any):
         ret = self.registry.__setitem__(self.t(key), value)
         with open(self.file, "wb") as f:
             pickle.dump(self.registry, f)

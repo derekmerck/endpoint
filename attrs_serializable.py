@@ -63,7 +63,7 @@ class AttrsSerializable(ABC):
             ctype = kwargs.get("ctype")
             del kwargs["ctype"]
             if ctype not in cls.registry.keys():
-                raise ValueError
+                raise ValueError(f"No ctype={ctype} registered!")
             _cls = cls.registry[ctype]
             return _cls(**kwargs)
 

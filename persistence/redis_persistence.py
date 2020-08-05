@@ -2,6 +2,7 @@
 Simple persistent dictionary using a redis instance.
 """
 
+import typing as typ
 from urllib.parse import urlparse
 import pickle
 import attr
@@ -37,13 +38,13 @@ class RedisPersistenceBackend(PersistenceBackend):
     def t(self, key: UID) -> UID:
         return f"{self.namespace}/{key}"
 
-    def __getitem__(self, key: UID):
+    def __getitem__(self, key: UID) -> typ.Any:
         ser = self.gateway.get(self.t(key))
         if ser:
             obj = pickle.loads(ser)
             return obj
 
-    def __setitem__(self, key: UID, value: DataItem):
+    def __setitem__(self, key: UID, value: typ.Any):
         ser = pickle.dumps(value)
         self.gateway.set(self.t(key), ser)
 
