@@ -1,10 +1,21 @@
 import typing as typ
+from enum import Enum
 from pprint import pprint
 from urllib.parse import urljoin
 from json import JSONDecodeError
 import attr
 import requests
 from .persistence.persistence import ShelfMixin
+
+
+class RequestType(Enum):
+    GET = "get"
+    PUT = "put"
+    POST = "post"
+    DELETE = "delete"
+
+
+RTy = RequestType
 
 
 # REST agent framework that wraps a Requests session object
@@ -37,8 +48,11 @@ class RestAgent(ShelfMixin):
         self.shelf = ShelfMixin.setup_shelf(self)  # Otherwise shelf doesn't exist yet
         self.session = self.setup_session()
 
+    # Trivial session initialization, overload this to setup a more complicated
+    # session with auth
     def setup_new_session(self) -> requests.Session:
-        raise NotImplementedError
+        session = requests.Session()
+        return session
 
     def handle_errors(self, r: requests.Response):
         print(r.status_code)
@@ -47,7 +61,7 @@ class RestAgent(ShelfMixin):
 
     def request(self,
                 resource: str,
-                method: str = "get",
+                method: typ.Union[RequestType, str] = "get",
                 params: typ.Dict = None,
                 headers: typ.Dict = None,
                 data: typ.Any = None,
@@ -58,11 +72,17 @@ class RestAgent(ShelfMixin):
                 decoder: typ.Callable = None) -> typ.Union[typ.Dict, typ.List, str, None]:
 
         url = urljoin(self.url, resource)
+
+        if isinstance(method, RequestType):
+            method = method.value
+
         req = requests.Request(method, url, params=params, headers=headers,
                                data=data, json=json, files=files)
         req_: requests.PreparedRequest = self.session.prepare_request(req)
 
         if inspect:
+            print(url)
+            print(method)
             pprint(req_.headers)
             print(req_.body)
 

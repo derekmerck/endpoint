@@ -1,5 +1,6 @@
 import typing as typ
 import os
+from io import StringIO
 import pathlib
 import yaml
 import attr
@@ -27,10 +28,13 @@ class ServiceManager(object):
     def status(self):
         res = {}
         for name, service in self.service_registry.items():
+            _status = False
             try:
-                res[name] = service.status() is not None  # Working if it returns a value
+                if hasattr(service, "status"):
+                    _status = service.status()  # Working endpoint if True
             except:
-                res[name] = False  # Not a service or raised any error
+                pass
+            res[name] = _status
         return res
 
     def add_service(self, name, **desc):
@@ -40,14 +44,16 @@ class ServiceManager(object):
         self.service_registry[name] = service
 
     @classmethod
-    def from_descs(cls, data: PathLike, shortcuts: typ.Callable = None):
+    def from_descs(cls, data: typ.Union[PathLike, StringIO], shortcuts: typ.Callable = None):
         mgr = cls(name_shortcuts=shortcuts)
 
-        if os.path.isfile(data):
-            with open(data) as f:
-                descs = yaml.safe_load(f)
-        else:
-            descs = yaml.safe_load(data)
+        # If this is an open-able file, open it
+        try:
+            if os.path.isfile(data):
+                data = open(data)
+        except:
+            pass
+        descs = yaml.safe_load(data)
 
         for name, desc in descs.items():
             mgr.add_service(name, **desc)

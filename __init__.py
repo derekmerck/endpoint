@@ -6,7 +6,7 @@ from .dt_utils import *
 from .persistence import PersistenceBackend, ShelfMixin
 # Not included directly to avoid unnecessary dependency
 # from .persistence.redis_persistence import RedisPersistenceBackend
-from .rest_agent import RestAgent
+from .rest_agent import RestAgent, RTy
 from .attrs_serializable import AttrsSerializable as Serializable
 from .svc_mgr import ServiceManager
 from .smart_json import SmartJSONEncoder
