@@ -11,3 +11,4 @@ from .attrs_serializable import AttrsSerializable as Serializable
 from .svc_mgr import ServiceManager
 from .smart_json import SmartJSONEncoder
 from .daemons import ObservableMixin, Event, Trigger, ObservableDirectory, FileEventType, Watcher
+from .hash_ops import hex_xor

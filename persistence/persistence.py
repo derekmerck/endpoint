@@ -9,14 +9,16 @@ import attr
 from ..data_item import UID, DataItem
 
 
+NS_JOIN_CHAR = r"/"
+
 # Pickle wrapper that behaves like a persistent k,v store
 @attr.s(auto_attribs=True)
 class PersistenceBackend(object):
 
     file: str = "/tmp/pbe.pkl"
     namespace: str = "pbe"
-    registry: typ.Dict = attr.ib(init=False)
 
+    registry: typ.Dict = attr.ib(init=False)
     @registry.default
     def load_registry(self) -> typ.Dict:
         if os.path.isfile(self.file):
@@ -24,8 +26,9 @@ class PersistenceBackend(object):
                 return pickle.load(f)
         return {}
 
+    # Remap this func for other key transformations
     def t(self, key: UID) -> UID:
-        return f"{self.namespace}/{key}"
+        return NS_JOIN_CHAR.join( [self.namespace, key] )
 
     def __getitem__(self, key: UID) -> typ.Any:
         if self.__contains__(key):
@@ -62,4 +65,3 @@ class ShelfMixin(object):
     # Cannot setup as a default b/c derived class namespaces will not be respected
     def __attrs_post_init__(self):
         self.shelf = self.setup_shelf()
-

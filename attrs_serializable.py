@@ -3,6 +3,7 @@ from abc import ABC
 from pprint import pformat
 import yaml
 import attr
+from .exceptions import EndpointValueException, EndpointTypeException
 
 
 @attr.s
@@ -63,7 +64,7 @@ class AttrsSerializable(ABC):
             ctype = kwargs.get("ctype")
             del kwargs["ctype"]
             if ctype not in cls.registry.keys():
-                raise ValueError(f"No ctype={ctype} registered!")
+                raise TypeError(f"No ctype={ctype} registered!")
             _cls = cls.registry[ctype]
             return _cls(**kwargs)
 

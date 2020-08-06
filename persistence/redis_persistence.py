@@ -11,9 +11,6 @@ from ..endpoint import UID, DataItem
 from .persistence import PersistenceBackend
 
 
-SERIALIZER = "pickle"
-
-
 # Redis wrapper that behaves like a persistent k,v store
 @attr.s(auto_attribs=True)
 class RedisPersistenceBackend(PersistenceBackend):
