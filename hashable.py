@@ -9,4 +9,4 @@ class Hashable(ABC):
     _uuid: uuid = attr.ib(factory=uuid.uuid4, init=False)
 
     def __hash__(self):
-        return self._uuid.int
+        return hash(self._uuid)

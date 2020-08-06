@@ -60,7 +60,7 @@ class ComparatorType(Enum):
     BINARY = auto()
 
 
-@attr.s(auto_attribs=True, hash=False, cmp=False)
+@attr.s(auto_attribs=True, eq=False, hash=False)
 class DataItem(Hashable):
     meta: typ.Dict = attr.Factory(dict)
     data: typ.Any = None
@@ -114,3 +114,5 @@ class DataItem(Hashable):
                 raise ValueError("Incomparable -- missing binary hash")
             return self.bhash == other.bhash
         raise TypeError(f"Unknown comparator type {self.__class__.comparator}")
+
+    __hash__ = Hashable.__hash__  # Attrs thinks fancy eq means unhashable
