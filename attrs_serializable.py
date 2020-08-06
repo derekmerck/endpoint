@@ -14,7 +14,11 @@ class AttrsSerializable(ABC):
     def as_dict(self, filters=None):
 
         def clean_entries(k, v):
-            if k.name not in _filters and v is not None and k.repr:  # and v != k.default
+            if k.name not in _filters and \
+                    v is not None and \
+                    k.repr and \
+                    v != k.default and \
+                    k.init:
                 return True
             return False
 
@@ -25,6 +29,7 @@ class AttrsSerializable(ABC):
         _dict = attr.asdict(self, filter=clean_entries)
         # Get rid of leading underscores for private vars (silly attrs convention)
         _dict = {k.lstrip("_"): v for k, v in _dict.items()}
+        _dict["ctype"] = self.__class__.__name__
         return _dict
 
     @property
@@ -46,7 +51,6 @@ class AttrsSerializable(ABC):
 
     def dumps(self, format="yaml"):
         _dict = self.as_dict()
-        _dict["ctype"] = self.__class__.__name__
         if format == "yaml":
             txt = yaml.dump(_dict)
         else:
@@ -57,7 +61,7 @@ class AttrsSerializable(ABC):
         registry = {}
 
         @classmethod
-        def make(cls, **kwargs) -> "AttrsSerializable":
+        def create(cls, **kwargs) -> "AttrsSerializable":
             if not "ctype" in kwargs.keys():
                 raise ValueError("No ctype in description")
             ctype = kwargs.get("ctype")
@@ -67,9 +71,12 @@ class AttrsSerializable(ABC):
             _cls = cls.registry[ctype]
             return _cls(**kwargs)
 
+        make = create
+
         @classmethod
-        def register(cls, my_class):
-            cls.registry[my_class.__name__] = my_class
+        def register(cls, _cls=None):
+            _cls = _cls or cls
+            cls.registry[_cls.__name__] = _cls
 
     def __attrs_post_init__(self):
         # self.logger.debug(f"Initting {self.__class__} as serializable")
