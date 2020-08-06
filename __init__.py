@@ -1,5 +1,5 @@
 from .endpoint import Endpoint
-from .data_item import DataItem, UID
+from .data_item import DataItem, UID, ComparatorType
 from .hashable import Hashable
 from .exceptions import *
 from .dt_utils import *
