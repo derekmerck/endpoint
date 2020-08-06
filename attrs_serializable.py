@@ -74,8 +74,8 @@ class AttrsSerializable(ABC):
         make = create
 
         @classmethod
-        def register(cls, _cls=None):
-            _cls = _cls or cls
+        def register(cls, _cls="AttrsSerializable"):
+            print(f"Registering {_cls.__name__}")
             cls.registry[_cls.__name__] = _cls
 
     def __attrs_post_init__(self):
