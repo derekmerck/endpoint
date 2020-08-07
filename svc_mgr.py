@@ -1,9 +1,11 @@
 import typing as typ
+from pprint import pprint
 import os
 from io import StringIO
 import pathlib
 import yaml
 import attr
+from .smart_yaml import smart_yaml_loader
 from .attrs_serializable import AttrsSerializable as Serializable
 from .data_item import UID
 
@@ -46,16 +48,7 @@ class ServiceManager(object):
     @classmethod
     def from_descs(cls, data: typ.Union[PathLike, StringIO], shortcuts: typ.Callable = None):
         mgr = cls(name_shortcuts=shortcuts)
-
-        # If this is an open-able file, open it
-        try:
-            if os.path.isfile(data):
-                data = open(data)
-        except:
-            pass
-        descs = yaml.safe_load(data)
-
+        descs = smart_yaml_loader(data)
         for name, desc in descs.items():
             mgr.add_service(name, **desc)
-
         return mgr

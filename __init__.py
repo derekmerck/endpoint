@@ -10,5 +10,6 @@ from .rest_agent import RestAgent, RTy
 from .attrs_serializable import AttrsSerializable as Serializable
 from .svc_mgr import ServiceManager
 from .smart_json import SmartJSONEncoder
+from .smart_yaml import smart_yaml_loader
 from .daemons import ObservableMixin, Event, Trigger, ObservableDirectory, FileEventType, Watcher
 from .hash_ops import hex_xor

@@ -1,3 +1,6 @@
+import yaml
+
+
 class EndpointException(Exception):
     pass
 
@@ -15,6 +18,12 @@ class EndpointValueException(EndpointException, ValueError):
 class EndpointTypeException(EndpointException, TypeError):
     """Endpoint request using the wrong data type"""
     pass
+
+
+class EndpointParsingException(EndpointException, yaml.parser.ParserError):
+    """Endpoint request using the wrong data type"""
+    pass
+
 
 
 class EndpointRuntimeException(EndpointException, RuntimeError):
