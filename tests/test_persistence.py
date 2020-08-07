@@ -2,7 +2,7 @@
 Create a test redis instance:
 $ docker run --rm -d -p 6379:6379 redis
 """
-from service.persistence import PersistenceBackend, RedisPersistenceBackend
+from libsvc.persistence import PersistenceBackend, RedisPersistenceBackend
 import pytest
 
 

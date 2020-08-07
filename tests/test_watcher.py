@@ -3,7 +3,7 @@ import logging
 import time
 from multiprocessing import Process
 from functools import partial
-from service.daemon import *
+from libsvc.daemon import *
 
 
 class EventType(Enum):

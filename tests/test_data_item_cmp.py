@@ -1,7 +1,7 @@
 import logging
 import itertools
 import numpy as np
-from service.endpoint import DataItem, ComparatorType
+from libsvc.endpoint import DataItem, ComparatorType
 
 
 def test_dynamic_cmp():

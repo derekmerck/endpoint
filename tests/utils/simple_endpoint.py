@@ -1,6 +1,6 @@
 import typing as typ
 import attr
-from service.endpoint import Endpoint, Serializable
+from libsvc.endpoint import Endpoint, Serializable
 
 
 @attr.s

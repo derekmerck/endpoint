@@ -1,4 +1,4 @@
-from service.utils import hex_xor as xor
+from libsvc.utils import hex_xor as xor
 
 def test_hex_xor():
 

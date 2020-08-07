@@ -1,6 +1,6 @@
 import tempfile
 import yaml
-from service.endpoint import ServiceManager
+from libsvc.endpoint import ServiceManager
 import pytest
 
 service_text = \

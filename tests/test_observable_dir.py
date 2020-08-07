@@ -3,7 +3,7 @@ from pathlib import Path
 import os
 import time
 import tempfile
-from service.daemon import ObservableDirectory
+from libsvc.daemon import ObservableDirectory
 
 
 def test_observable_dir():

@@ -1,6 +1,6 @@
 import logging
 from pprint import pprint
-from service.endpoint import Serializable
+from libsvc.endpoint import Serializable
 import pytest
 
 from tests.utils.simple_endpoint import SimpleEP

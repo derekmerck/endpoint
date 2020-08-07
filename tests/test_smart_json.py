@@ -2,7 +2,7 @@ import logging, json
 from hashlib import md5
 import pathlib
 from datetime import datetime
-from service.utils import SmartJSONEncoder
+from libsvc.utils import SmartJSONEncoder
 
 
 def test_encoder():
