@@ -17,7 +17,7 @@ Creating a Watcher framework
 import typing as typ
 import time
 import attr
-from ...endpoint import Hashable
+from ..endpoint.hashable import Hashable
 
 EventType = typ.TypeVar("EventType")
 

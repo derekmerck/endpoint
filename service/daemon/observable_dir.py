@@ -8,7 +8,7 @@ import attr
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler, FileSystemEvent
 from .watcher import ObservableMixin, Event
-from ..attrs_serializable import AttrsSerializable as Serializable
+from ..endpoint import Serializable
 
 
 class FileEventType(Enum):

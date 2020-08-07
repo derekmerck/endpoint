@@ -7,7 +7,7 @@ from urllib.parse import urlparse
 import pickle
 import attr
 from redis import Redis
-from ..endpoint import UID, DataItem
+from service.endpoint import UID, DataItem
 from .persistence import PersistenceBackend
 
 

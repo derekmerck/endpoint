@@ -5,7 +5,7 @@ from urllib.parse import urljoin
 from json import JSONDecodeError
 import attr
 import requests
-from .persistence.persistence import ShelfMixin
+from service.persistence.persistence import ShelfMixin
 
 
 class RequestType(Enum):

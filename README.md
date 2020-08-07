@@ -1,9 +1,9 @@
-# Python Data Endpoint Library
+# Python Data Services Library
 
 Derek Merck  
 Summer 2020  
 
-Collection of utilities for managing information endpoints with CRUD accessors.
+Collection of utilities for managing data items and information endpoints with CRUD accessors.
 
 Deriving a class from Hashable, Endpoint, RestAgent, and Serializable creates a highly functional class that can be instantiated from fixed keywords, has access to persistent data (authentication tokens, indexes, etc.), and can connect to specific APIs in order to move or process data.
 

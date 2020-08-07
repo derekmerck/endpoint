@@ -6,10 +6,11 @@ import os
 import typing as typ
 import pickle
 import attr
-from ..data_item import UID, DataItem
+from service.endpoint import UID, DataItem
 
 
 NS_JOIN_CHAR = r"/"
+
 
 # Pickle wrapper that behaves like a persistent k,v store
 @attr.s(auto_attribs=True)
