@@ -24,3 +24,7 @@ class ExceptionHandlingIterator(object):
             logger.warning("Skipping bad iter value")
             return self.__next__()
 
+
+# Suppress warnings about ugly data
+logger = logging.getLogger("ExceptionHandlingIterator")
+logger.setLevel(logging.ERROR)
