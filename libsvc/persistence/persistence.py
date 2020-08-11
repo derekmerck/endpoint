@@ -6,7 +6,7 @@ import os
 import typing as typ
 import pickle
 import attr
-from ..endpoint import UID, DataItem
+from ..endpoint.data_item import UID, DataItem
 
 
 NS_JOIN_CHAR = r"/"
