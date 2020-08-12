@@ -64,7 +64,7 @@ class ComparatorType(Enum):
 class DataItem(Hashable):
     meta: typ.Dict = attr.Factory(dict)
     data: typ.Any = None
-    binary: bytes = None
+    binary: bytes = attr.ib(repr=False, default=None)
 
     timestamp: datetime = None
     # Overload to set non-now timestamp
