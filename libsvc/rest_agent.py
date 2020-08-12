@@ -69,6 +69,7 @@ class RestAgent(ShelfMixin):
                 files: typ.Dict = None,
                 inspect: bool = False,
                 verbose: bool = False,
+                ignore_errors: bool = False,
                 decoder: typ.Callable = None) -> typ.Union[typ.Dict, typ.List, str, None]:
 
         url = urljoin(self.url, resource)
@@ -91,7 +92,10 @@ class RestAgent(ShelfMixin):
 
         r = self.session.send(req_)
         if r.status_code != 200:
-            self.handle_errors(r)
+            if not ignore_errors:
+                self.handle_errors(r)
+            else:
+                return
 
         if verbose:
             pprint(r.headers)

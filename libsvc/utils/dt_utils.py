@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+import random
 from dateutil import parser as dtparser
 import attr
 
@@ -33,3 +34,10 @@ class TimeInterval(object):
     def as_dict(self):
         return {'startTime': self.start.isoformat(),
                 'endTime': self.end.isoformat()}
+
+
+def small_rand_td(second_range = 60*60*24*5, _seed: str = None) -> timedelta:
+    if _seed:
+        random.seed(_seed)
+    second_offset = random.randint(-second_range, second_range)
+    return timedelta(seconds=second_offset)
