@@ -1,3 +1,4 @@
+import typing as typ
 from datetime import datetime, timedelta
 import random
 from dateutil import parser as dtparser
@@ -34,6 +35,38 @@ class TimeInterval(object):
     def as_dict(self):
         return {'startTime': self.start.isoformat(),
                 'endTime': self.end.isoformat()}
+
+    def intervals(self, interval_delta=timedelta(hours=1)):
+        """Usage:
+        >>> for interval in TimeInterval().intervals(timedelta(hours=1)):
+        ...    print(interval)
+        """
+
+        @attr.s(auto_attribs=True)
+        class IntervalIterator(object):
+            start: datetime = datetime.now()
+            end: datetime = datetime.now() + timedelta(hours=1)
+            interval_delta: timedelta = timedelta(minutes=5)
+
+            interval_start: datetime = attr.ib(init=False)
+            @interval_start.default
+            def mk_interval_start(self):
+                print(f"Range start: {self.start}")
+                print(f"Range end:   {self.end}")
+                return self.start
+
+            def __iter__(self) -> "IntervalIterator":
+                return self
+
+            def __next__(self) -> typ.Tuple[datetime, datetime]:
+                this_start = self.interval_start
+                this_end = self.interval_start + self.interval_delta
+                if this_start > self.end:
+                    raise StopIteration
+                self.interval_start += self.interval_delta
+                return this_start, this_end
+
+        return IntervalIterator(start=self.start, end=self.end, interval_delta=interval_delta)
 
 
 def small_rand_td(second_range = 60*60*24*5, _seed: str = None) -> timedelta:
