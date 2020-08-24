@@ -58,13 +58,13 @@ class TimeInterval(object):
             def __iter__(self) -> "IntervalIterator":
                 return self
 
-            def __next__(self) -> typ.Tuple[datetime, datetime]:
+            def __next__(self) -> TimeInterval:
                 this_start = self.interval_start
                 this_end = self.interval_start + self.interval_delta
                 if this_start > self.end:
                     raise StopIteration
                 self.interval_start += self.interval_delta
-                return this_start, this_end
+                return TimeInterval(this_start, this_end)
 
         return IntervalIterator(start=self.start, end=self.end, interval_delta=interval_delta)
 
