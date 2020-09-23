@@ -19,12 +19,12 @@ or bhash) allows various comparisons.
 
 1. Using 'uuid' is traditional pythonic "same instance"
 2. Using 'mhash' can compare headers even if the data is not present in either or
-   both instaces
+   both instances
 3. Using 'dhash' will identifies duplicate data even when the metadata has changed,
    for example, when one dataset has been anonymized
 4. Using 'bhash' is equivalent to comparing the hashes of the source data files
 
-It's a bit clunky, but the user can set the comparison type on demand by manipulating
+It is a bit clunky, but the user can set the comparison type on demand by manipulating
 the class "comparator" attribute.
 
 >> a = DataItem(meta="a", data=1)
@@ -40,6 +40,10 @@ Meta-hashing is assumed to be available bc there is not a good reason to use thi
 class without  some minimal amount of metadata.  Data-hashing and Binary-hashing may
 not be available, if those hashes don't exist for either member, __cmp__ raises
 ValueError.
+
+When hashes are altered using the built-in "mk_*hash" functions, the previous hash
+values are cached as "stale", so they can be removed from secondary indices.
+Calling "mk_*hash" also automatically refreshes the "update_ts" field.
 """
 
 import typing as typ
@@ -66,25 +70,38 @@ class DataItem(Hashable):
     data: typ.Any = None
     binary: bytes = attr.ib(repr=False, default=None)
 
+    # Record keeping
+    discovery_ts: datetime = attr.Factory(datetime.now)
+    update_ts: datetime = attr.Factory(datetime.now)
+
     timestamp: datetime = None
     # Overload to set non-now timestamp
     def mk_timestamp(self):
         return datetime.now()
 
     mhash: str = None
+    stale_mhash: str = attr.ib(init=False, default=None)
     def mk_mhash(self):
+        self.stale_mhash = self.mhash or "FRESH"
+        self.update_ts = datetime.now()
         return hashlib.sha3_224(str(self.meta).encode("utf8")).hexdigest()
 
     dhash: str = None
+    stale_dhash: str = attr.ib(init=False, default=None)
     def mk_dhash(self):
         if self.data is None:
             return None
+        self.stale_dhash = self.dhash or "FRESH"
+        self.update_ts = datetime.now()
         return hashlib.sha3_224(self.data).hexdigest()
 
     bhash: str = None
+    stale_bhash: str = None
     def mk_bhash(self):
         if self.binary is None:
             return None
+        self.stale_bhash = self.bhash or "FRESH"
+        self.update_ts = datetime.now()
         return hashlib.sha3_224(self.binary).hexdigest()
 
     # Don't want to do these ops until everything is settled

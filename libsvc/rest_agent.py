@@ -1,4 +1,5 @@
 import typing as typ
+import time
 from enum import Enum
 from pprint import pprint
 from urllib.parse import urljoin
@@ -7,6 +8,7 @@ import attr
 import requests
 from libsvc.persistence import ShelfMixin
 
+MAX_CONNECTION_ATTEMPTS = 10
 
 class RequestType(Enum):
     GET = "get"
@@ -90,7 +92,18 @@ class RestAgent(ShelfMixin):
         if self.dry_run:
             return
 
-        r = self.session.send(req_)
+        for attempt in range(MAX_CONNECTION_ATTEMPTS+1):
+            try:
+                r = self.session.send(req_)
+            except ConnectionError as e:
+                print(f"-->Connection failed! (attempt {attempt})")
+                if attempt == MAX_CONNECTION_ATTEMPTS:  # Last loop
+                    print("-->Could not connect")
+                    raise e
+                time.sleep(1.0)  # Give the connection a second to cool down
+                continue
+            break
+
         if r.status_code != 200:
             if not ignore_errors:
                 self.handle_errors(r)
