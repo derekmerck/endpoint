@@ -121,4 +121,5 @@ class RestAgent(ShelfMixin):
                 return decoder(r)
             return r.json()
         except JSONDecodeError:
-            return str(r.content)
+            # Don't cast this to string -- it messes up binary data responses
+            return r.content
