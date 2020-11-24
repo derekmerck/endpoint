@@ -26,6 +26,7 @@ EventType = typ.TypeVar("EventType")
 class Event(object):
     event_type: EventType
     data: typ.Any
+    source: "ObservableMixin"
 
 
 @attr.s(auto_attribs=True, hash=False)
@@ -59,7 +60,7 @@ class Watcher(object):
         for trigger in self.triggers:
             for event in observations[trigger.source]:
                 if event.event_type == trigger.event_type:
-                    trigger.handler(event.data)
+                    trigger.handler(event, trigger.source)
 
     def run(self):
         while True:
