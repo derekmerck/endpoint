@@ -26,7 +26,7 @@ EventType = typ.TypeVar("EventType")
 class Event(object):
     event_type: EventType
     data: typ.Any
-    source: "ObservableMixin"
+    # source: "ObservableMixin"
 
 
 @attr.s(auto_attribs=True, hash=False)
